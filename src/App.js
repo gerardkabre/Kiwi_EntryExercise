@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Layout, Card, FormLayout, TextField, DatePicker, Button } from '@shopify/polaris';
+
+import FlightItem from './FlightItem';
 import dateFormatter from './utils';
 
 import '@shopify/polaris/styles.css';
@@ -10,6 +12,7 @@ class App extends Component {
     date: '',
     from: '',
     to: '',
+    flights: []
   };
 
   handleSubmit = event => {
@@ -17,18 +20,29 @@ class App extends Component {
     const { from, to, date } = this.state;
     fetch(`https://api.skypicker.com/flights?flyFrom=${from}&to=${to}&dateFrom=${date}`)
       .then(res => res.json())
-      .then(response => console.log(response))
+      .then(res => this.setState({ flights: res.data }))
       .catch(e => console.error(e));
   };
   render() {
+    const flightList = this.state.flights.map(flight => (
+      <FlightItem
+        from={flight.mapIdfrom}
+        to={flight.mapIdto}
+        duration={flight.fly_duration}
+        price={flight.conversion.EUR}
+        key={flight.id}
+      />
+    ));
     return (
       <div className="App">
         <Layout>
           <Layout.AnnotatedSection title="Description" description="">
             <Card sectioned>
-              Entry task for Kiwi from Gerard Cabrerizo. Using the Polaris components library from Shopify.
+              <p>Entry task for Kiwi from Gerard Cabrerizo.</p>
+              <p> Using the Polaris components library from Shopify.</p>
             </Card>
           </Layout.AnnotatedSection>
+          
           <Layout.AnnotatedSection
             title="Flight details"
             description="Select where do you want to go, from where are you flying and your desired date to get the flight prices."
@@ -62,7 +76,7 @@ class App extends Component {
           </Layout.AnnotatedSection>
 
           <Layout.AnnotatedSection title="Results" description="Results from your search.">
-            <Card sectioned />
+            {flightList}
           </Layout.AnnotatedSection>
         </Layout>
       </div>
