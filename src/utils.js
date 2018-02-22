@@ -15,9 +15,9 @@ const months = {
 
 function dateFormatter(date) {
     const dateArray = date.toString().split(' ');
-    let month = monthToNumber(dateArray[1]);
-    let day = dateArray[2];
-    let year = dateArray[3];
+    const month = monthToNumber(dateArray[1]);
+    const day = dateArray[2];
+    const year = dateArray[3];
     return `${day}/${month}/${year}`;
 }
 
