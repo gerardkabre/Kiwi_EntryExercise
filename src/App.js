@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Card, FormLayout, TextField, DatePicker, Button } from '@shopify/polaris';
 
 import FlightItem from './FlightItem';
+import Pagination from './Pagination';
 import dateFormatter from './utils';
 
 import '@shopify/polaris/styles.css';
@@ -30,9 +31,15 @@ class App extends Component {
         to={flight.mapIdto}
         duration={flight.fly_duration}
         price={flight.conversion.EUR}
+        id={flight.id}
         key={flight.id}
       />
     ));
+
+    const SearchResults = (this.state.flights.length > 1)
+    ? <Pagination list={flightList} />
+    : <Card sectioned>Make a Search first</Card>;
+
     return (
       <div className="App">
         <Layout>
@@ -42,7 +49,7 @@ class App extends Component {
               <p> Using the Polaris components library from Shopify.</p>
             </Card>
           </Layout.AnnotatedSection>
-          
+
           <Layout.AnnotatedSection
             title="Flight details"
             description="Select where do you want to go, from where are you flying and your desired date to get the flight prices."
@@ -63,7 +70,7 @@ class App extends Component {
                     onChange={value => this.setState({ to: value })}
                   />
                   <DatePicker
-                    month={6}
+                    month={1}
                     year={2018}
                     onChange={value => this.setState({ date: dateFormatter(value.start) })}
                   />
@@ -74,9 +81,8 @@ class App extends Component {
               </form>
             </Card>
           </Layout.AnnotatedSection>
-
           <Layout.AnnotatedSection title="Results" description="Results from your search.">
-            {flightList}
+           {SearchResults}
           </Layout.AnnotatedSection>
         </Layout>
       </div>
