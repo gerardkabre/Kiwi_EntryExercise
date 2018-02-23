@@ -10,9 +10,8 @@ class Suggestions extends Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    let { keyword } = this.props;
     if (nextProps.keyword !== this.props.keyword) {
-      fetch(`https://api.skypicker.com/locations/?term=${keyword}&v=2&locale=en-US`)
+      fetch(`https://api.skypicker.com/locations/?term=${nextProps.keyword}&v=2&locale=en-US`)
         .then(res => res.json())
         .then(res => this.setState({ suggestions: res.locations }))
         .catch(e => console.error(e));
