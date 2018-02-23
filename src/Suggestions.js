@@ -19,9 +19,17 @@ class Suggestions extends Component {
   }
 
   render() {
-    const suggestionList = this.state.suggestions.map(x => <div>{x.name}</div>);
-
-    return <div>{suggestionList}</div>;
+    if (this.props.fromComponent) {
+      const suggestionList = this.state.suggestions.map(suggestion => (
+        <li onClick={event => this.props.selectFrom(suggestion.name)}>{suggestion.name}</li>
+      ));
+      return suggestionList;
+    } else {
+      const suggestionList = this.state.suggestions.map(suggestion => (
+        <li onClick={event => this.props.selectTo(suggestion.name)}>{suggestion.name}</li>
+      ));
+      return suggestionList;
+    }
   }
 }
 

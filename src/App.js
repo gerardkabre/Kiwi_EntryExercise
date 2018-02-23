@@ -25,6 +25,14 @@ class App extends Component {
       .catch(e => console.error(e));
   };
 
+  selectTo = selected => {
+    this.setState({ to: selected });
+  };
+  
+  selectFrom = selected => {
+    this.setState({ from: selected });
+  };
+
   render() {
     const flightList = this.state.flights.map(flight => (
       <FlightItem
@@ -63,14 +71,14 @@ class App extends Component {
                     value={this.state.from}
                     onChange={value => this.setState({ from: value })}
                   />
-                  <Suggestions keyword={this.state.from} />
+                  <Suggestions keyword={this.state.from} selectFrom={this.selectFrom} fromComponent={true}/>
                   <TextField
                     label="To"
                     placeholder="Where do you want to go"
                     value={this.state.to}
                     onChange={value => this.setState({ to: value })}
                   />
-                  <Suggestions keyword={this.state.to} />
+                  <Suggestions keyword={this.state.to} selectTo={this.selectTo}/>
                   <DatePicker
                     month={1}
                     year={2018}
