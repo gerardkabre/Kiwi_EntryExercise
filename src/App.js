@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Layout, Card, FormLayout, TextField, DatePicker, Button } from '@shopify/polaris';
-
 import FlightItem from './FlightItem';
 import Pagination from './Pagination';
-import dateFormatter from './utils';
+import Suggestions from './Suggestions';
 
 import '@shopify/polaris/styles.css';
 import './App.css';
+import dateFormatter from './utils';
 
 class App extends Component {
   state = {
@@ -24,6 +24,15 @@ class App extends Component {
       .then(res => this.setState({ flights: res.data }))
       .catch(e => console.error(e));
   };
+
+  selectTo = selected => {
+    this.setState({ to: selected });
+  };
+  
+  selectFrom = selected => {
+    this.setState({ from: selected });
+  };
+
   render() {
     const flightList = this.state.flights.map(flight => (
       <FlightItem
@@ -36,9 +45,8 @@ class App extends Component {
       />
     ));
 
-    const SearchResults = (this.state.flights.length > 1)
-    ? <Pagination list={flightList} />
-    : <Card sectioned>Make a Search first</Card>;
+    const SearchResults =
+      this.state.flights.length > 1 ? <Pagination list={flightList} /> : <Card sectioned>Make a Search first</Card>;
 
     return (
       <div className="App">
@@ -63,12 +71,14 @@ class App extends Component {
                     value={this.state.from}
                     onChange={value => this.setState({ from: value })}
                   />
+                  <Suggestions keyword={this.state.from} selectFrom={this.selectFrom} fromComponent={true}/>
                   <TextField
                     label="To"
                     placeholder="Where do you want to go"
                     value={this.state.to}
                     onChange={value => this.setState({ to: value })}
                   />
+                  <Suggestions keyword={this.state.to} selectTo={this.selectTo}/>
                   <DatePicker
                     month={1}
                     year={2018}
@@ -82,7 +92,7 @@ class App extends Component {
             </Card>
           </Layout.AnnotatedSection>
           <Layout.AnnotatedSection title="Results" description="Results from your search.">
-           {SearchResults}
+            {SearchResults}
           </Layout.AnnotatedSection>
         </Layout>
       </div>
