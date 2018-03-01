@@ -7,3 +7,12 @@
   font-size: 1.2em;
   font-weight: bolder;
 }
+
+.suggestion {
+  border: solid 1px rgba(243, 239, 239, 0.589);
+  padding: 5px;
+}
+.suggestion:hover {
+  background-color: floralwhite;
+  cursor: pointer;
+}
