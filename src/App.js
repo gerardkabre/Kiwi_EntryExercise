@@ -13,22 +13,24 @@ class App extends Component {
     date: '',
     from: '',
     to: '',
-    flights: []
+    flights: [],
+    searching: false
   };
 
   handleSubmit = event => {
     event.preventDefault();
     const { from, to, date } = this.state;
+    this.setState({ searching: true });
     fetch(`https://api.skypicker.com/flights?flyFrom=${from}&to=${to}&dateFrom=${date}`)
       .then(res => res.json())
-      .then(res => this.setState({ flights: res.data }))
+      .then(res => this.setState({ flights: res.data, searching: false }))
       .catch(e => console.error(e));
   };
 
   selectTo = selected => {
     this.setState({ to: selected });
   };
-  
+
   selectFrom = selected => {
     this.setState({ from: selected });
   };
@@ -45,8 +47,14 @@ class App extends Component {
       />
     ));
 
-    const SearchResults =
-      this.state.flights.length > 1 ? <Pagination list={flightList} /> : <Card sectioned>Make a Search first</Card>;
+    const searchResults = () => {
+      const { searching, flights } = this.state;
+      if (searching) {
+        return 'Loading results...';
+      } else {
+        return flights.length > 1 ? <Pagination list={flightList} /> : <Card sectioned>Make a Search</Card>;
+      }
+    };
 
     return (
       <div className="App">
@@ -71,28 +79,25 @@ class App extends Component {
                     value={this.state.from}
                     onChange={value => this.setState({ from: value })}
                   />
-                  <Suggestions keyword={this.state.from} selectFrom={this.selectFrom} fromComponent={true}/>
+                  <Suggestions keyword={this.state.from} selectFrom={this.selectFrom} fromComponent />
                   <TextField
                     label="To"
                     placeholder="Where do you want to go"
                     value={this.state.to}
                     onChange={value => this.setState({ to: value })}
                   />
-                  <Suggestions keyword={this.state.to} selectTo={this.selectTo}/>
+                  <Suggestions keyword={this.state.to} selectTo={this.selectTo} toComponent />
                   <DatePicker
                     month={1}
                     year={2018}
                     onChange={value => this.setState({ date: dateFormatter(value.start) })}
                   />
-                  <Button primary={true} submit={true}>
-                    Get flights
-                  </Button>
                 </FormLayout>
               </form>
             </Card>
           </Layout.AnnotatedSection>
           <Layout.AnnotatedSection title="Results" description="Results from your search.">
-            {SearchResults}
+            {searchResults()}
           </Layout.AnnotatedSection>
         </Layout>
       </div>

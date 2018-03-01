@@ -6,7 +6,9 @@ import './App.css';
 
 class Suggestions extends Component {
   state = {
-    suggestions: []
+    suggestions: [],
+    showFrom: true,
+    showTo: true
   };
 
   componentWillReceiveProps(nextProps) {
@@ -19,16 +21,37 @@ class Suggestions extends Component {
   }
 
   render() {
-    if (this.props.fromComponent) {
-      const suggestionList = this.state.suggestions.map(suggestion => (
-        <li onClick={event => this.props.selectFrom(suggestion.name)}>{suggestion.name}</li>
+    const { fromComponent, toComponent, selectFrom, selectTo } = this.props;
+    const { showFrom, showTo, suggestions } = this.state;
+
+    if (fromComponent && showFrom) {
+      return suggestions.map(suggestion => (
+        <div
+          className="suggestion"
+          onClick={() => {
+            selectFrom(suggestion.name);
+            this.setState({ showFrom: false });
+          }}
+        >
+          {suggestion.name}
+        </div>
       ));
-      return suggestionList;
     } else {
-      const suggestionList = this.state.suggestions.map(suggestion => (
-        <li onClick={event => this.props.selectTo(suggestion.name)}>{suggestion.name}</li>
-      ));
-      return suggestionList;
+      if (toComponent && showTo) {
+        return suggestions.map(suggestion => (
+          <div
+            className="suggestion"
+            onClick={() => {
+              selectTo(suggestion.name);
+              this.setState({ showTo: false });
+            }}
+          >
+            {suggestion.name}
+          </div>
+        ));
+      } else {
+        return null;
+      }
     }
   }
 }
