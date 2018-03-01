@@ -1,5 +1,5 @@
 
-# Kiwi entry task
+# Kiwi entry task for [Kiwi.com Modern JS weekend](https://jsweekend.cz/)
 [Live version](http://distracted-lewin-69b343.netlify.com)
 by Gerard Cabrerizo Lopez. 
 
