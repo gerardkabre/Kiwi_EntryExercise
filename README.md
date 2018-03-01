@@ -1,6 +1,7 @@
 
 # Kiwi entry task
-Gerard Cabrerizo Lopez.
+[Live version](http://distracted-lewin-69b343.netlify.com)
+by Gerard Cabrerizo Lopez. 
 
 ## Requeriments 
 Flight search page. 
